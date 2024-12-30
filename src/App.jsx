@@ -14,6 +14,7 @@ function App() {
 
   return (
     <>
+    <Advice/>
     <Clock/>
     <StopWatch/>
     <TodoInput setTodo={setTodo}/>
@@ -23,6 +24,27 @@ function App() {
 
     </>
   );
+}
+
+const Advice = () => {  
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    fetch('https://korean-advice-open-api.vercel.app/api/advice')
+    .then(res => res.json())
+    .then(res => setData(res));
+  }, [] )
+  return <>
+  {data && (
+    <> 
+      <h1>{data.message}</h1>
+      <h1>{data.author}</h1>
+    
+    
+    </>
+   
+  )}
+  
+  </>
 }
 
 const Clock = () => {
