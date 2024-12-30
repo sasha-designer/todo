@@ -1,33 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useRef, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [todo, setTodo] = useState([
+    {
+      id: Number(new Date()),
+      text: 'todo item ',
+    }
+  ]);
+ 
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <TodoInput setTodo={setTodo}/>
+    <TodoList todo={todo} setTodo={setTodo}/>
+
+
+
+    </>
+  );
+}
+
+
+const TodoInput = ({setTodo}) => {
+  const inputRef = useRef(null);
+  const addTodo =() => {
+    const newTodo = {
+      id: Number(new Date()),
+      text: inputRef.current.value,
+    };
+    setTodo((prev) => [...prev, newTodo]);
+  }
+
+
+  return (
+    <>
+    <input ref={inputRef} />
+    <button onClick={addTodo}>add</button>
+    </>
+  )
+}
+
+const TodoList = ({todo, setTodo}) => {
+  return (
+    <ul>
+    {todo.map(el => (
+     <Todo key={el.id} todo={el} setTodo={setTodo} />
+    ))}
+  </ul>
+  )
+}
+
+const Todo = ({todo, setTodo}) => {
+  return (
+    <>
+     <li >{todo.text}
+      <button onClick={()=>{
+        setTodo((prev) => prev.filter((el) => el.id !== todo.id));
+      }}>삭제</button>
+      </li>
     </>
   )
 }
