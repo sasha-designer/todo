@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
+import { use } from 'react';
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
 
   return (
     <>
+    <Clock/>
     <TodoInput setTodo={setTodo}/>
     <TodoList todo={todo} setTodo={setTodo}/>
 
@@ -20,6 +22,23 @@ function App() {
 
     </>
   );
+}
+
+const Clock = () => {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+  }, []);
+
+  return (
+    <div>
+      <h1>{time.toLocaleTimeString()}</h1>
+    </div>
+  )
 }
 
 
