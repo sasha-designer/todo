@@ -26,18 +26,31 @@ function App() {
   );
 }
 
-const Advice = () => {  
+const useFetch = (url) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState(null);
+
   useEffect(() => {
-    fetch('https://korean-advice-open-api.vercel.app/api/advice')
+    fetch(url)
     .then(res => res.json())
-    .then(res => setData(res));
-  }, [] )
+    .then(res => {
+      setData(res);
+      setIsLoading(false);
+    });
+  }, [url]);
+  return {isLoading, data};
+}
+
+
+
+
+const Advice = () => {  
+  const {isLoading, data} = useFetch('https://korean-advice-open-api.vercel.app/api/advice');
   return <>
   {data && (
     <> 
-      <h1>{data.message}</h1>
-      <h1>{data.author}</h1>
+      <h6>{data.message}</h6>
+      <h6>{data.author}</h6>
     
     
     </>
